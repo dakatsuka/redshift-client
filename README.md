@@ -1,4 +1,4 @@
-# Redshift::Client
+# Redshift::Client [![Build Status](https://travis-ci.org/dakatsuka/redshift-client.svg)](https://travis-ci.org/dakatsuka/redshift-client)
 
 The ruby client for AWS Redshift.
 
