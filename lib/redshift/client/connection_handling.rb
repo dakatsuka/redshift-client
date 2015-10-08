@@ -1,5 +1,6 @@
 require 'pg'
 require 'uri'
+require 'active_support/lazy_load_hooks'
 
 module Redshift
   module Client
@@ -26,7 +27,7 @@ module Redshift
       end
 
       def connection
-        raise ConnectionNotEstablished.new unless established?
+        ActiveSupport.run_load_hooks :redshift_client_connection unless established?
 
         if connected?
           thread[:connection]
@@ -49,6 +50,7 @@ module Redshift
       end
 
       def connect!
+        raise ConnectionNotEstablished.new unless established?
         thread[:connection] = PG.connect(thread[:configurations].to_hash)
       end
 

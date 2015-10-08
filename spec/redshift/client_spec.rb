@@ -53,6 +53,31 @@ describe Redshift::Client do
     end
   end
 
+  describe "#connection" do
+    context "when already established" do
+      before do
+        Redshift::Client.establish_connection
+      end
+
+      it "returns PG::Connection" do
+        expect(Redshift::Client.connection).to be_instance_of PG::Connection
+      end
+    end
+
+    context "when not yet established" do
+      before do
+        allow(ActiveSupport).to receive :run_load_hooks
+      end
+
+      it "calls ActiveSupport#run_load_hooks and raise error" do
+        Thread.new {
+          expect { Redshift::Client.connection }.to raise_error(Redshift::Client::ConnectionNotEstablished)
+          expect(ActiveSupport).to have_received(:run_load_hooks).with(:redshift_client_connection).once
+        }.join
+      end
+    end
+  end
+
   describe "#established?" do
     context "when already established" do
       before do
@@ -70,7 +95,7 @@ describe Redshift::Client do
 
     context "when not yet established" do
       it "returns false" do
-        Thread.new { expect(Redshift::Client).not_to be_established }
+        Thread.new { expect(Redshift::Client).not_to be_established }.join
       end
     end
   end
