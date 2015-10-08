@@ -70,7 +70,7 @@ describe Redshift::Client do
 
     context "when not yet established" do
       it "returns false" do
-        expect(Redshift::Client).not_to be_established
+        Thread.new { expect(Redshift::Client).not_to be_established }
       end
     end
   end

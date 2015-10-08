@@ -11,8 +11,10 @@ module Redshift
       end
 
       def disconnect
-        connection.finish if connected?
-        cleanup_thread!
+        if connected?
+          connection.finish
+          cleanup!
+        end
       end
 
       def connected?
@@ -38,8 +40,8 @@ module Redshift
         Thread.current[:redshift] = {}
       end
 
-      def cleanup_thread!
-        Thread.current[:redshift] = nil
+      def cleanup!
+        Thread.current[:redshift][:connection] = nil
       end
 
       def thread
