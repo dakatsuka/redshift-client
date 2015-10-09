@@ -1,6 +1,6 @@
 # Redshift::Client [![Build Status](https://travis-ci.org/dakatsuka/redshift-client.svg)](https://travis-ci.org/dakatsuka/redshift-client) [![Gem Version](https://badge.fury.io/rb/redshift-client.svg)](https://badge.fury.io/rb/redshift-client)
 
-The ruby client for AWS Redshift.
+This gem provides a way to connect to AWS Redshift using the [ruby-pg](https://github.com/ged/ruby-pg).
 
 ## Installation
 
@@ -12,7 +12,7 @@ gem 'redshift-client'
 
 And then execute:
 
-    $ bundle
+    $ bundle install
 
 Or install it yourself as:
 
@@ -20,19 +20,29 @@ Or install it yourself as:
 
 ## Usage
 
-Please set `REDSHIFT_URL` Env.
+### Using with your application
+
+```ruby
+require 'rubygems'
+require 'redshift-client'
+```
+
+After that you configure the url of Redshift:
 
 ```
 $ export REDSHIFT_URL="redshift://user:password@*****.region.redshift.amazonaws.com:5439/dbname"
 ```
 
+Please refer to the following code:
+
 ```ruby
 require 'redshift/client'
 
 Redshift::Client.establish_connection
-Redshift::Client.connection # instance of PG::Connection
 
-Redshift::Client.connection.exec("SELECT GETDATE()").first # => {"getdate"=>"2015-10-08 05:17:40"}
+Redshift::Client.connection # instance of PG::Connection
+Redshift::Client.connection.exec("SELECT GETDATE()").first
+# => {"getdate"=>"2015-10-08 05:17:40"}
 ```
 
 ## Development
@@ -43,7 +53,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/redshift-client. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/dakatsuka/redshift-client. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
 
 
 ## License
