@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["d.akatsuka@gmail.com"]
 
   spec.summary       = %q{The ruby client for AWS Redshift.}
-  spec.description   = %q{The ruby client for AWS Redshift.}
+  spec.description   = %q{This gem provides a way to connect to AWS Redshift using the ruby-pg.}
   spec.homepage      = "https://github.com/dakatsuka/redshift-client"
   spec.license       = "MIT"
 
