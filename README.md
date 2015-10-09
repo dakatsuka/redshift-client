@@ -24,7 +24,7 @@ Or install it yourself as:
 
 ```ruby
 require 'rubygems'
-require 'redshift-client'
+require 'redshift/client'
 ```
 
 After that you configure the url of Redshift:
@@ -36,8 +36,6 @@ $ export REDSHIFT_URL="redshift://user:password@*****.region.redshift.amazonaws.
 Please refer to the following code:
 
 ```ruby
-require 'redshift/client'
-
 Redshift::Client.establish_connection
 
 Redshift::Client.connection # instance of PG::Connection
