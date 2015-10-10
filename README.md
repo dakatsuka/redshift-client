@@ -38,8 +38,8 @@ Please refer to the following code:
 ```ruby
 Redshift::Client.establish_connection
 
-Redshift::Client.connection # instance of PG::Connection
-Redshift::Client.connection.exec("SELECT GETDATE()").first
+Redshift::Client.connection
+Redshift::Client.connection.exec("SELECT GETDATE()").first # delegate to PG::Connection
 # => {"getdate"=>"2015-10-08 05:17:40"}
 ```
 

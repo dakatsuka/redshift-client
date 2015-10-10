@@ -59,8 +59,8 @@ describe Redshift::Client do
         Redshift::Client.establish_connection
       end
 
-      it "returns PG::Connection" do
-        expect(Redshift::Client.connection).to be_instance_of PG::Connection
+      it "returns an instance of connection" do
+        expect(Redshift::Client.connection).to be_instance_of Redshift::Client::Connection
       end
     end
 

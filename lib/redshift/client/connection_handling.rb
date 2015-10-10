@@ -1,61 +1,54 @@
-require 'pg'
-require 'uri'
+require 'thread'
 require 'active_support/lazy_load_hooks'
 
 module Redshift
   module Client
     module ConnectionHandling
-      def establish_connection(config = {})
-        disconnect
-        initialize_thread!
-        configure!(config)
-      end
+      def establish_connection(config= {})
+        clear_connection!
+        clear_thread!
 
-      def disconnect
-        if connected?
-          connection.finish
-          cleanup!
-        end
-      end
-
-      def connected?
-        !!(thread && thread[:connection])
-      end
-
-      def established?
-        !!(thread && thread[:configurations])
+        current[:configuration] = Configuration.resolve(config)
       end
 
       def connection
-        ActiveSupport.run_load_hooks :redshift_client_connection unless established?
+        return current[:connection] if connected?
 
-        if connected?
-          thread[:connection]
-        else
-          connect!
-        end
+        ActiveSupport.run_load_hooks :redshift_client_connection
+
+        check_established!
+        current[:connection] = Connection.new(current[:configuration])
+        current[:connection]
+      end
+
+      def disconnect
+        clear_connection!
+      end
+
+      def established?
+        !! current[:configuration]
+      end
+
+      def connected?
+        !! current[:connection]
       end
 
       private
-      def initialize_thread!
-        Thread.current[:redshift] = {}
-      end
-
-      def cleanup!
-        Thread.current[:redshift][:connection] = nil
-      end
-
-      def thread
-        Thread.current[:redshift]
-      end
-
-      def connect!
+      def check_established!
         raise ConnectionNotEstablished.new unless established?
-        thread[:connection] = PG.connect(thread[:configurations].to_hash)
       end
 
-      def configure!(config)
-        thread[:configurations] = Configuration.parse(config)
+      def clear_connection!
+        current[:connection] && current[:connection].close
+        current[:connection] = nil
+      end
+
+      def clear_thread!
+        Thread.current[:redshift] = nil
+      end
+
+      def current
+        Thread.current[:redshift] ||= {}
       end
     end
   end

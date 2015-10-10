@@ -1,9 +1,11 @@
+require 'uri'
+
 module Redshift
   module Client
     class Configuration
       attr_reader :host, :port, :user, :password, :dbname
 
-      def self.parse(config)
+      def self.resolve(config = {})
         if config.empty?
           url = URI.parse(ENV["REDSHIFT_URL"])
           self.new(url.host, url.port, url.user, url.password, url.path[1..-1])
@@ -22,7 +24,7 @@ module Redshift
         @dbname = dbname
       end
 
-      def to_hash
+      def params
         {
           host: @host,
           port: @port,
