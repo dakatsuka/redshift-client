@@ -9,6 +9,10 @@ module Redshift
         @logger || create_default_logger
       end
 
+      def logger=(logger)
+        @logger = logger
+      end
+
       private
       def create_default_logger
         @logger = Logger.new($stdout)
