@@ -1,19 +1,37 @@
 require 'uri'
+require 'active_support/core_ext/hash/reverse_merge'
 
 module Redshift
   module Client
     class Configuration
       attr_reader :host, :port, :user, :password, :dbname
 
-      def self.resolve(config = {})
-        if config.empty?
-          url = URI.parse(ENV["REDSHIFT_URL"])
-          self.new(url.host, url.port, url.user, url.password, url.path[1..-1])
-        else
-          self.new(config[:host], config[:port], config[:user], config[:password], config[:dbname])
+      class << self
+        def resolve(config = {})
+          config.reverse_merge!(parse_redshift_url)
+
+          Configuration.new(
+            config[:host],
+            config[:port],
+            config[:user],
+            config[:password],
+            config[:dbname]
+          )
         end
-      rescue => e
-        raise ConfigurationError.new(e.message)
+
+        private
+        def parse_redshift_url
+          uri = URI.parse(ENV["REDSHIFT_URL"])
+          {
+            host: uri.host,
+            port: uri.port,
+            user: uri.user,
+            password: uri.password,
+            dbname: uri.path[1..-1]
+          }
+        rescue
+          {}
+        end
       end
 
       def initialize(host, port, user, password, dbname)

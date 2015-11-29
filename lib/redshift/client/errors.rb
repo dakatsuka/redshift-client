@@ -3,9 +3,6 @@ module Redshift
     class RedshiftClientError < StandardError
     end
 
-    class ConfigurationError < RedshiftClientError
-    end
-
     class ConnectionNotEstablished < RedshiftClientError
     end
   end
