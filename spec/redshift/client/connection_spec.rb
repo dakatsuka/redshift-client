@@ -8,9 +8,8 @@ describe Redshift::Client::Connection do
       allow(PG).to receive(:connect)
     end
 
-    subject { Redshift::Client::Connection.new(configuration) }
-
     it "calls PG#connect" do
+      Redshift::Client::Connection.new(configuration)
       expect(PG).to have_received(:connect).with(configuration.params).once
     end
   end
