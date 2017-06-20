@@ -7,7 +7,7 @@ module Redshift
     class Configuration
       attr_reader :host, :port, :user, :password, :dbname
 
-      DEFAULT_SSL_MODE = 'require'.freeze
+      DEFAULT_SSL_MODE = 'allow'.freeze
 
       class << self
         def resolve(config = {})
