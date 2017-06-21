@@ -13,7 +13,8 @@ describe Redshift::Client::Configuration do
         port: 5439,
         user: "root",
         password: "password",
-        dbname: "dev"
+        dbname: "dev",
+        sslmode: "require"
       }
     end
 

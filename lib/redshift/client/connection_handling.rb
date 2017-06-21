@@ -4,7 +4,7 @@ require 'active_support/lazy_load_hooks'
 module Redshift
   module Client
     module ConnectionHandling
-      def establish_connection(config= {})
+      def establish_connection(config = {})
         clear_connection!
         clear_thread!
 
