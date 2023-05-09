@@ -1,5 +1,4 @@
 require 'thread'
-require 'active_support/lazy_load_hooks'
 
 module Redshift
   module Client
@@ -13,8 +12,6 @@ module Redshift
 
       def connection
         return current[:connection] if connected?
-
-        ActiveSupport.run_load_hooks :redshift_client_connection
 
         check_established!
         current[:connection] = Connection.new(current[:configuration])

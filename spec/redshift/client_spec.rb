@@ -63,19 +63,6 @@ describe Redshift::Client do
         expect(Redshift::Client.connection).to be_instance_of Redshift::Client::Connection
       end
     end
-
-    context "when not yet established" do
-      before do
-        allow(ActiveSupport).to receive :run_load_hooks
-      end
-
-      it "calls ActiveSupport#run_load_hooks and raise error" do
-        Thread.new {
-          expect { Redshift::Client.connection }.to raise_error(Redshift::Client::ConnectionNotEstablished)
-          expect(ActiveSupport).to have_received(:run_load_hooks).with(:redshift_client_connection).once
-        }.join
-      end
-    end
   end
 
   describe "#established?" do
