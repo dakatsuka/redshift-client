@@ -1,5 +1,3 @@
-require 'active_support'
-require 'active_support/core_ext/class/attribute_accessors'
 require 'logger'
 
 module Redshift
