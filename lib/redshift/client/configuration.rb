@@ -1,6 +1,5 @@
 require 'uri'
 require 'cgi'
-require 'active_support/core_ext/hash/reverse_merge'
 
 module Redshift
   module Client
@@ -11,7 +10,7 @@ module Redshift
 
       class << self
         def resolve(config = {})
-          config.reverse_merge!(parse_redshift_url)
+          config = parse_redshift_url.merge!(config)
 
           Configuration.new(
             config[:host],
