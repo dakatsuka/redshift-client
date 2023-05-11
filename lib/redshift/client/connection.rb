@@ -18,7 +18,8 @@ module Redshift
         :escape,
         :escape_string,
         :escape_literal,
-        :close
+        :close,
+        :transaction
     end
   end
 end
