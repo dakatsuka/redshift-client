@@ -9,6 +9,7 @@ module Redshift
 
       def initialize(configuration)
         @original = PG.connect(configuration.params)
+        @original.type_map_for_results = PG::BasicTypeMapForResults.new(@original)
       end
 
       def_delegators \
@@ -19,8 +20,7 @@ module Redshift
         :escape_string,
         :escape_literal,
         :close,
-        :transaction,
-        :quote_ident
+        :transaction
     end
   end
 end
