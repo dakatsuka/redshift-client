@@ -1,14 +1,13 @@
 require 'pg'
-require 'forwardable'
 
 module Redshift
   module Client
     class Connection
-      extend Forwardable
       attr_reader :original
 
       def initialize(configuration)
         @original = PG.connect(configuration.params)
+        @original.type_map_for_results = PG::BasicTypeMapForResults.new(@original)
       end
 
       def method_missing(method_name, *args, &block)
@@ -22,6 +21,7 @@ module Redshift
       def respond_to_missing?(method_name, include_private = false)
         @original.respond_to?(method_name, include_private) || super
       end
+
     end
   end
 end
